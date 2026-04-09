@@ -1,0 +1,14 @@
+button {
+    border: none;
+}
+
+.headerButton {
+    padding: 23px;
+
+    color: #FFFFFF;
+    font-family: 'Roboto';
+    font-size: 14px;
+
+    background-color: #2196F3;
+    cursor: pointer;
+}
