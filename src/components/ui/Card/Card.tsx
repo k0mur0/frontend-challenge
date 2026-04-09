@@ -4,24 +4,18 @@ import "./Card.css";
 interface CardProps {
   id: string;
   url: string;
-  isFavorite: boolean;
-  onFavoriteChange: (newValue: boolean) => void;
+  isFavorite?: boolean;
 }
 
-export const Card: React.FC<CardProps> = ({
-  id,
-  url,
-  isFavorite: initialFavorite,
-  onFavoriteChange,
-}) => {
+export const Card: React.FC<CardProps> = ({id, url, isFavorite: initFavorite}) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(initialFavorite);
+  const [isFavorite, setIsFavorite] = useState(initFavorite);
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation(); 
     const newValue = !isFavorite;
     setIsFavorite(newValue);
-    onFavoriteChange(newValue);
+    // onFavoriteChange(newValue);
   };
 
   return (
@@ -30,7 +24,12 @@ export const Card: React.FC<CardProps> = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <img src={url} alt={id} className="card-image" />
+      <img 
+        src={url} 
+        alt={id} className="card-image" 
+        width={225}
+        height={225}
+      />
 
       {isHovered && (
         <button

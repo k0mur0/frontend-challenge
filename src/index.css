@@ -7,6 +7,15 @@ body {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+  outline: none;
+}
+
+button {
+  border: none;
+}
+
 header {
   position: sticky;
   top: 0;
@@ -19,8 +28,25 @@ header {
   box-shadow: 0 4px 4px rgba(0,0,0,0.24);
 }
 
-.post-list {
+a.nav-link {
+  display: inline-block;
+  padding: 23px;
+
+  color: #FFFFFF;
+
+  background-color: #2196F3;
+  cursor: pointer;
+}
+
+a.nav-link.active {
+  background-color: #1E88E5;
+}
+
+main {
   padding: 52px 60px;
+}
+
+.post-list {
   display: flex;
   flex-wrap: wrap;
   gap: 33px;

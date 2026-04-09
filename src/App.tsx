@@ -1,31 +1,21 @@
-import { useEffect, useState } from "react";
-import { Card } from "./components/ui/Card/Card";
+import { Posts } from "./pages/Posts";
 import { Header } from "./components/ui/Header/Header";
-import { PostService } from "./api/PostService";
-import { PostList } from "./components/PostList";
+import { Routes, Route } from "react-router";
+import { Favorites } from "./pages/Favorites";
 
-interface IPost {
-
-}
 
 function App() {
-  const [ posts, setPosts ] = useState([]);
-
-
-  const getPosts = async () => {
-    const posts = await PostService.getAll();
-    console.log(posts)
-    setPosts(posts)
-  }
-
-  useEffect(() => {
-    getPosts();
-  }, [])
 
   return (
     <>
       <Header />
-      <PostList posts={posts}/>
+      <main>
+          <Routes>
+            <Route path="/" element={<Posts/>} />
+            <Route path="/favorites" element={<Favorites/>} />
+            <Route path="*" element={<h1>Ничего не найдено</h1>}/>
+          </Routes>
+      </main>
     </>
   )
 }
