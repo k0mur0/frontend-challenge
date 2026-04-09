@@ -1,0 +1,28 @@
+.card-wrapper {
+  position: relative;
+  width: 225px;
+  height: 225px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.card-wrapper:hover {
+  box-shadow: 0 9px 18px rgba(0, 0, 0, 0.18), 0 6px 5px rgba(0, 0, 0, 0.24);
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  transition: transform 0.4s ease;
+}
+
+.favorite-button {
+  position: absolute;
+  bottom: 24px;
+  right: 23px;
+  
+  background: none;
+  cursor: pointer;
+}

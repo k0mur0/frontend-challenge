@@ -1,18 +1,31 @@
+import { useEffect, useState } from "react";
+import { Card } from "./components/ui/Card/Card";
 import { Header } from "./components/ui/Header/Header";
+import { PostService } from "./api/PostService";
+import { PostList } from "./components/PostList";
+
+interface IPost {
+
+}
 
 function App() {
-  const imgProps = {
-    src: 'image3.png'
+  const [ posts, setPosts ] = useState([]);
+
+
+  const getPosts = async () => {
+    const posts = await PostService.getAll();
+    console.log(posts)
+    setPosts(posts)
   }
+
+  useEffect(() => {
+    getPosts();
+  }, [])
+
   return (
     <>
       <Header />
-      <div className="card-wrapper">
-        <img src={imgProps.src} alt="cat-image" width={225} height={225}/>
-        <button>
-          Добавить
-        </button>
-      </div>
+      <PostList posts={posts}/>
     </>
   )
 }
