@@ -5,3 +5,4 @@ export type IPost = {
     height: number;
     isFavorite?: boolean;
 }
+

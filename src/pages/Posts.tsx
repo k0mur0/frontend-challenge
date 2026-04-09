@@ -1,22 +1,30 @@
 import { useState, useEffect } from "react";
 import { PostList } from "../components/PostList";
 import { PostService } from "../api/PostService";
+import { useFetching } from '../hooks/useFetching'
+import { usePostsStore } from "../store/postsStore";
 
 export const Posts = () => {
-    const [ posts, setPosts ] = useState([]);
-    
-    
-      const getPosts = async () => {
+    const postsStore = usePostsStore();
+    const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
         const posts = await PostService.getAll();
-        console.log(posts)
-        setPosts(posts)
-      }
+        postsStore.addPosts(posts)
+      })
     
       useEffect(() => {
-        getPosts();
+        if (postsStore.posts.length === 0) {
+          fetchPosts();
+        }
       }, [])
     
-      return (
-        <PostList posts={posts}/>
+      return (<>
+        {postError && 
+          <h1>Произошла ошибка :(</h1>
+        }
+        {isPostsLoading ? <h1>Загрузка постов...</h1>
+        : <PostList posts={postsStore.posts}/>  
+      }
+      </>
+        
     )
 }
