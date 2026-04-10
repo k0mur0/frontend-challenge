@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
-import { PostList } from "../components/PostList";
-import { PostService } from "../api/PostService";
+import { useEffect } from "react";
+import { PostsApi } from "../api/PostsApi";
 import { useFetching } from '../hooks/useFetching'
-import { usePostsStore } from "../store/postsStore";
+import { usePostsStore } from "../store/PostsStore";
+import { PostList } from "../components/PostList";
 
 export const Posts = () => {
-    const postsStore = usePostsStore();
+    const {posts, addPosts, addFavorite, removeFavorite} = usePostsStore();
     const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
-        const posts = await PostService.getAll();
-        postsStore.addPosts(posts)
+        const posts = await PostsApi.getAll();
+        addPosts(posts)
       })
     
       useEffect(() => {
-        if (postsStore.posts.length === 0) {
+        if (posts.size === 0) {
           fetchPosts();
         }
       }, [])
@@ -22,7 +22,7 @@ export const Posts = () => {
           <h1>Произошла ошибка :(</h1>
         }
         {isPostsLoading ? <h1>Загрузка постов...</h1>
-        : <PostList posts={postsStore.posts}/>  
+        : <PostList posts={posts} addFavorite={addFavorite} removeFavorite={removeFavorite}/>
       }
       </>
         

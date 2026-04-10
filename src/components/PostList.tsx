@@ -1,26 +1,23 @@
 import { Card } from "./ui/Card/Card"
-
-type IPost = {
-    id: string;
-    url: string;
-    width: number;
-    height: number;
-    isFavorite?: boolean;
-}
+import type { IPost } from "../types/IPost";
 
 interface PostListProps {
-    posts: IPost[]
+    posts: Map<string, IPost>;
+    addFavorite: (id: string) => void;
+    removeFavorite: (id: string) => void;
 }
 
-export const PostList: React.FC<PostListProps> = ({posts, changeFavorite}) => {
+export const PostList: React.FC<PostListProps> = ({posts, addFavorite, removeFavorite}) => {
     return <div className="post-list">
-        {posts.map(post => (
-            <Card
-                key={post.id}
-                id={post.id}
-                url={post.url}
-                isFavorite={post.isFavorite}
-            ></Card>
-        ))}
-    </div>
+                {Array.from(posts.values()).map(post => (
+                    <Card
+                        key={post.id}
+                        id={post.id}
+                        url={post.url}
+                        isFavorite={post.isFavorite}
+                        addFavorite={addFavorite}
+                        removeFavorite={removeFavorite}
+                    />
+                ))}
+            </div>
 }

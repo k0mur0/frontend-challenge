@@ -1,49 +1,48 @@
 import React, { useState } from 'react';
 import "./Card.css";
+import type { IPost } from '../../../types/IPost';
 
-interface CardProps {
-  id: string;
-  url: string;
-  isFavorite?: boolean;
+interface CardProps extends IPost {
+  addFavorite: (id: string) => void;
+  removeFavorite: (id: string) => void;
 }
 
-export const Card: React.FC<CardProps> = ({id, url, isFavorite: initFavorite}) => {
+export const Card: React.FC<CardProps> = ({id, url, isFavorite = false, addFavorite, removeFavorite}) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(initFavorite);
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation(); 
-    const newValue = !isFavorite;
-    setIsFavorite(newValue);
-    // onFavoriteChange(newValue);
+    if (!isFavorite) {
+      addFavorite(id);
+    } else {
+      removeFavorite(id);
+    }
   };
 
   return (
     <div
       className="card-wrapper"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <img 
         src={url} 
-        alt={id} className="card-image" 
+        alt={id} 
+        className="card-image"
+        loading='lazy'
         width={225}
         height={225}
       />
 
-      {isHovered && (
-        <button
-          className="favorite-button"
-          onClick={toggleFavorite}
-          aria-label={isFavorite ? "Убрать из избранного" : "Добавить в избранное"}
-        >
-          <img
-            src={isFavorite ? "favorite.svg" : "favorite_border.svg"}
-            alt="heart"
-            className={`heart-icon ${isFavorite ? 'filled' : ''}`}
-          />
-        </button>
-      )}
+      <button
+        className="favorite-button"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={toggleFavorite}
+      >
+        <img
+          src={isFavorite || isHovered ? "favorite.svg" : "favorite_border.svg"}
+          alt="like"
+        />
+      </button>
       
     </div>
   );
