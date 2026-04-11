@@ -19,7 +19,7 @@ export const Posts = () => {
       if (posts.size === 0) {
         fetchPosts();
       }
-    }, [])
+    }, [posts.size, fetchPosts])
   
     return (<>
       {postError && 
