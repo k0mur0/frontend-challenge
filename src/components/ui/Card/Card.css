@@ -12,6 +12,7 @@
 
 .card-wrapper:hover {
   box-shadow: 0 9px 18px rgba(0, 0, 0, 0.18), 0 6px 5px rgba(0, 0, 0, 0.24);
+  transform: scale(1.14);
 }
 
 .card-image {

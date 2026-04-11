@@ -2,7 +2,6 @@ import { create } from "zustand";
 import type { IPost } from "../types/IPost";
 
 
-
 interface IPostsStore {
     posts: Map<string, IPost>;
     favoritePosts: Map<string, IPost>;
@@ -54,12 +53,20 @@ export const usePostsStore = create<IPostsStore>((set) => ({
 
     removeFavorite: (id) => {
         set((state) => {
-            if (!state.favoritePosts.has(id)) return state;
+            const post = state.posts.get(id);
+            if (!post) return state;
+
+            const updatedPosts = new Map(state.posts);
+            updatedPosts.set(id, { ...post, isFavorite: false });
 
             const updatedFavorites = new Map(state.favoritePosts);
             updatedFavorites.delete(id);
+            
 
-            return { favoritePosts: updatedFavorites}
+            return {
+                posts: updatedPosts, 
+                favoritePosts: updatedFavorites
+            }
         })
     }
 }))
