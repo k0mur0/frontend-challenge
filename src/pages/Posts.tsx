@@ -3,6 +3,7 @@ import { PostsApi } from "../api/PostsApi";
 import { useFetching } from '../hooks/useFetching'
 import { usePostsStore } from "../store/PostsStore";
 import { PostList } from "../components/PostList";
+import { useObserver } from "../hooks/useObserver";
 
 export const Posts = () => {
     const {posts, addPosts, addFavorite, removeFavorite} = usePostsStore();
@@ -10,21 +11,11 @@ export const Posts = () => {
         const posts = await PostsApi.getAll();
         addPosts(posts)
       });
-    const lastElement = useRef();
-    const observer = useRef();
+    const lastElement = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-      const callback = function(entries, observer) {
-        if (entries[0].isIntersecting){
-          fetchPosts();
-        }
-      }
-      observer.current = new IntersectionObserver(callback);
-      observer.current.observe(lastElement.current)
-    }, [])
+    useObserver(lastElement, isPostsLoading, fetchPosts)
     
     useEffect(() => {
-      console.log(lastElement)
       if (posts.size === 0) {
         fetchPosts();
       }
@@ -34,9 +25,10 @@ export const Posts = () => {
       {postError && 
         <h1>Произошла ошибка :(</h1>
       }
+      
       <PostList posts={posts} addFavorite={addFavorite} removeFavorite={removeFavorite}/>
-      {isPostsLoading && <h1>Загрузка постов</h1>}
-      <div ref={lastElement} style={{height: 20, background: 'red'}}></div>
+      {isPostsLoading && <div style={{marginTop: 48, fontSize: 14, textAlign: 'center' }}>... загружаем еще котиков ...</div>}
+      <div ref={lastElement}/>
     </>
   )
 }
