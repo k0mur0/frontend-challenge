@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import { PostsApi } from "../api/PostsApi";
 import { useFetching } from '../hooks/useFetching'
-import { usePostsStore } from "../store/PostsStore";
 import { PostList } from "../components/PostList";
 import { useObserver } from "../hooks/useObserver";
+import { usePostsStore } from "../store/PostsStore";
 
 export const Posts = () => {
     const {posts, addPosts, addFavorite, removeFavorite} = usePostsStore();
@@ -21,14 +21,13 @@ export const Posts = () => {
       }
     }, [posts.size, fetchPosts])
   
-    return (<>
-      {postError && 
-        <h1>Произошла ошибка :(</h1>
-      }
-      
+    return (<>      
       <PostList posts={posts} addFavorite={addFavorite} removeFavorite={removeFavorite}/>
       {isPostsLoading && <div style={{marginTop: 48, fontSize: 14, textAlign: 'center' }}>... загружаем еще котиков ...</div>}
-      <div ref={lastElement}/>
+      {postError  
+        ? <h1 style={{textAlign: 'center'}}>Произошла ошибка :(</h1>
+        : <div ref={lastElement}/>
+      }
     </>
   )
 }
